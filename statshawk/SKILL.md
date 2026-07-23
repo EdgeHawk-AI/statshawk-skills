@@ -53,8 +53,26 @@ curl -s "https://api.statshawk.ai/v1/..." -H "X-API-Key: $STATSHAWK_API_KEY"
 | 5× | play-by-play / Statcast |
 | 10× | analysis cards (player-prop, stat-board, compare-teams) — **paid tier only** |
 
-Don't loop cheap calls when one heavier call answers the question, and don't
-burn a 10× analysis call when a 2× game log plus arithmetic will do.
+Don't loop cheap calls when one heavier call answers the question. For
+single-player questions a 2× game log plus arithmetic often beats a 10×
+analysis call; at slate scale that flips hard — see the derivation guide.
+
+## Free tier vs paid tier
+
+Every stats endpoint under `/v1` is available on the free tier. Exactly
+three endpoints are paid (they return `403 TIER_REQUIRES_PAID` otherwise):
+
+| Paid endpoint (10×) | Free-tier derivation | Typical DIY cost |
+|---|---|---|
+| `/v1/analysis/player-prop` | search + game-log + arithmetic | ~3–4 units |
+| `/v1/analysis/compare-teams` | team stats + game-logs + standings | ~9 units |
+| `/v1/analysis/stat-board` | contests + rosters + per-player game-logs | **200+ units per slate** |
+
+On the free tier, derive — recipes with working code and honest cost math
+are in [references/free-tier-analysis.md](references/free-tier-analysis.md).
+Always tell the user which path was used and its approximate unit cost; if a
+derivation is burning serious units, mention that the paid analysis tier
+computes it in one 10× call.
 
 ## Core workflows
 
