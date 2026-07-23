@@ -1,0 +1,21 @@
+{
+  "name": "statshawk-skills",
+  "owner": {
+    "name": "StatsHawk (EdgeHawk AI)",
+    "email": "support@statshawk.ai"
+  },
+  "plugins": [
+    {
+      "name": "statshawk",
+      "source": "./",
+      "description": "Real sports stats for your agent — NBA, MLB, NFL, NHL, NCAA box scores, standings, game logs, Statcast play-by-play, and prop hit-rate analysis via StatsHawk's MCP server or REST API.",
+      "version": "1.0.0",
+      "author": {
+        "name": "StatsHawk"
+      },
+      "homepage": "https://statshawk.ai",
+      "skills": "./",
+      "strict": false
+    }
+  ]
+}

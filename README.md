@@ -7,8 +7,17 @@ play-by-play, and pre-computed player-prop analysis.
 
 ## Install
 
+Any agent that supports the [Agent Skills standard](https://agentskills.io):
+
 ```bash
 npx skills add EdgeHawk-AI/statshawk-skills@statshawk
+```
+
+Claude Code (as a plugin, with update tracking):
+
+```
+/plugin marketplace add EdgeHawk-AI/statshawk-skills
+/plugin install statshawk@statshawk-skills
 ```
 
 Then set your API key (free tier: 5,000 units/month — create a key at
