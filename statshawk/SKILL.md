@@ -76,14 +76,22 @@ computes it in one 10× call.
 
 ## Core workflows
 
-**Resolve the current edition first.** Season years don't match calendar
-years (NBA 2025-26 is edition `2026`). Never assume — pick by span:
+**Resolve the current edition first.** Seasons are keyed by their START
+year everywhere: the 2025-26 NBA season is `season_year` **2025**, same as
+the 2025 MLB season. Never assume — pick by span. The envelope is
+`{ "data": { "items": [...] } }` and the key is `season_year`:
 
 ```bash
 curl -s "https://api.statshawk.ai/v1/competitions/nba/editions" -H "X-API-Key: $STATSHAWK_API_KEY" \
   | jq -r --arg now "$(date -u +%Y-%m-%dT%H:%M:%SZ)" \
-    '[.editions[] | select(.span.start <= $now)] | (map(select(.span.end >= $now)) + [max_by(.span.start)]) | first | .year'
+    '[.data.items[] | select(.span.start <= $now)]
+     | (map(select(.span.end >= $now)) + [max_by(.span.start)]) | first | .season_year'
 ```
+
+For standings specifically, skip resolution entirely:
+`GET /v1/competitions/{comp}/standings` serves the latest edition with a
+completed game (never an empty upcoming season) and reports the served
+`season_year`.
 
 **Today's games / scoreboard**
 `GET /v1/competitions/{comp}/editions/{year}/contests?date=YYYY-MM-DD`
@@ -120,13 +128,15 @@ MLB only; filter by player to keep responses small.
 | MCP tool | REST |
 |---|---|
 | `search_player` | `GET /v1/persons?q=` |
-| `get_standings` | `GET /v1/competitions/{comp}/editions/{year}/standings` |
+| `get_standings` | `GET /v1/competitions/{comp}/standings` (latest edition with a final; per-edition: `.../editions/{year}/standings`) |
 | `search_games` | `GET /v1/competitions/{comp}/editions/{year}/contests?date=` |
 | `get_box_score` | `GET /v1/contests/{id}/boxscore` |
 | `get_team_roster` | `GET /v1/teams/{team_id}/roster` |
 | `get_mlb_matchups` | `GET /v1/competitions/mlb/editions/{year}/matchups?date=` |
 | `get_play_by_play` | `GET /v1/contests/{id}/play-by-play` |
 | `get_player_props` | `GET /v1/analysis/player-prop` (paid) |
+| `get_stat_capabilities` | `GET /v1/competitions/{comp}/capabilities` · `GET /v1/persons/{person_id}/capabilities?competition=&season=` |
+| `search_docs` | no REST route — searches statshawk.ai/docs from inside the MCP |
 
 Full endpoint reference: [references/endpoints.md](references/endpoints.md).
 Complete docs: https://statshawk.ai/docs · machine-readable index:

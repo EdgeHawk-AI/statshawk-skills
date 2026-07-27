@@ -12,6 +12,7 @@ Tier `paid` = returns `403 TIER_REQUIRES_PAID` on the free tier.
 | `GET /v1/competitions` | the competition index (all competitions, flat). | any | — |
 | `GET /v1/competitions/{comp}` | sport, kind, name (resolved by slug). | any | — |
 | `GET /v1/competitions/{comp}/capabilities` | the per-phase measure inventory | any | — |
+| `GET /v1/competitions/{comp}/standings` | standings for the latest edition with a completed game — the default; avoids picking an empty upcoming season. Reports the served `season_year`. | any | — |
 | `GET /v1/competitions/{comp}/editions` | editions of a competition. | any | — |
 | `GET /v1/competitions/{comp}/editions/{year}` | GET /v1/competitions/{comp}/editions/{year} | any | — |
 | `GET /v1/competitions/{comp}/editions/{year}/contests` | GET /v1/competitions/{comp}/editions/{year}/contests?date= | any | date |
@@ -28,6 +29,7 @@ Tier `paid` = returns `403 TIER_REQUIRES_PAID` on the free tier.
 | `GET /v1/persons/{person_id}` | assembled profile (one row, no joins). | any | — |
 | `GET /v1/persons/{person_id}/appearances` | GET /v1/persons/{per_id}/appearances | any | competition, season, edition, from, to, role, phase, stage |
 | `GET /v1/persons/{person_id}/capabilities` | which phases/measures this person | any | competition, season |
+| `GET /v1/persons/{person_id}/overview` | one-call person overview (profile + season summary). | any | competition, season |
 | `GET /v1/persons/{person_id}/game-log` | the person's chronological game log | any | competition, season, edition, from, to, role, phase, stage |
 | `GET /v1/persons/{person_id}/memberships` | GET /v1/persons/{per_id}/memberships | any | — |
 | `GET /v1/persons/{person_id}/stats` | GET /v1/persons/{per_id}/stats | any | competition, season |
